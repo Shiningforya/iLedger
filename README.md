@@ -1,6 +1,7 @@
 # iLedger 本地账本
 
-跨 macOS、Windows、Android 和浏览器的本地个人记账工具。账本默认保存在当前应用的本地存储中。
+跨 macOS、Windows、Android 和浏览器的本地个人记账工具。
+账本默认保存在当前应用的本地存储中。
 
 ## 启动
 
@@ -13,15 +14,11 @@ npm run dev
 
 ## 安装包构建
 
-桌面版使用 Electron，Android 版使用 Capacitor，三端图标均来自 `public/iledger-favicon.svg`。
-
 ```bash
 npm run pack:mac      # Apple Silicon DMG
 npm run pack:win      # Windows x64 NSIS EXE
 npm run pack:android  # Android 调试版 APK
 ```
-
-桌面安装包写入 `release/`；Android 打包需要本机安装 JDK 21、Android SDK 36，并配置 `JAVA_HOME` 与 `ANDROID_HOME`。当前脚本生成的 macOS 和 Windows 安装包未使用发布证书签名；Android 包使用调试签名，不适合直接上架应用商店。
 
 ## 当前包含
 
@@ -37,4 +34,5 @@ npm run pack:android  # Android 调试版 APK
 
 ## 数据说明
 
-账本数据写入各平台应用自己的 `localStorage`；网页与安装版之间不会自动迁移已有数据，可先通过导出、导入功能转移。联网汇率使用 Frankfurter 公开参考汇率接口，只发送币种代码。WebDAV 传输仍由用户手动触发，尚未实现无感同步。
+账本数据写入应用本地的 `localStorage`；不会自动迁移已有数据，可先通过导出、导入功能转移。
+仅在联网调整汇率时使用 Frankfurter 公开参考汇率接口，只发送币种代码。
