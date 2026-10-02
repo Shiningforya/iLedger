@@ -1,0 +1,55 @@
+import type { LedgerState, PageSlogans } from "./types";
+
+export const defaultSlogans: PageSlogans = {
+  dashboard: { title: "每一笔，都有来处。", subtitle: "本地记录、清晰归类，在需要时看见真正重要的变化。" },
+  database: { title: "每一条记录，都可以追溯。", subtitle: "收支、账期、借款、订阅与折旧资产保存在同一套本地数据中。" },
+  profile: { title: "账户、类别与规则。", subtitle: "点击任意项目即可进入编辑，敏感资料默认只保存在本机。" },
+};
+
+export const initialLedger: LedgerState = {
+  accounts: [],
+  categories: [
+    { id: "daily", name: "日用", type: "expense", color: "#88C8AE", icon: "basket", aliases: ["纸巾", "洗衣液", "洗发", "沐浴露", "牙膏", "收纳", "清洁", "超市", "杂货", "房租", "水电", "燃气", "物业", "宽带", "话费", "网费", "电费", "药", "医院", "挂号", "体检", "看病"] },
+    { id: "food", name: "餐饮", type: "expense", color: "#F0A49B", icon: "fork", aliases: ["饭", "早餐", "午餐", "晚餐", "外卖", "奶茶", "咖啡", "拿铁", "零食", "水果", "火锅", "烧烤", "麻辣烫", "麦当劳", "肯德基", "饮料", "可乐", "豆浆", "包子", "星巴克", "瑞幸", "蜜雪"] },
+    { id: "transport", name: "交通", type: "expense", color: "#85B7E6", icon: "train", aliases: ["地铁", "公交", "打车", "滴滴", "出租", "加油", "停车", "高铁", "火车", "机票", "骑行", "单车", "车费", "通勤"] },
+    { id: "entertainment", name: "娱乐", type: "expense", color: "#C9A2D5", icon: "game", aliases: ["电影", "游戏", "Steam", "会员", "视频", "音乐", "演唱会", "剧本杀", "KTV", "酒吧", "B站", "哔哩哔哩", "大会员", "网易云", "黑胶"] },
+    { id: "study", name: "学习", type: "expense", color: "#EFC574", icon: "book", aliases: ["书", "课程", "网课", "文具", "考试", "资料", "教材", "讲座", "ChatGPT", "OpenAI", "Claude", "Gemini", "Copilot", "Cursor", "DeepSeek", "豆包", "千问", "通义", "Kimi", "文心一言", "智谱", "Midjourney", "AI会员", "人工智能", "大模型"] },
+    { id: "digital", name: "数码", type: "expense", color: "#7DC8C7", icon: "device", aliases: ["电子", "数码", "iPad", "电脑", "笔记本", "手机", "耳机", "AirPods", "鼠标", "键盘", "显示器", "Switch", "相机", "镜头", "手表", "硬盘", "路由器", "无人机", "Kindle", "投影仪", "淘宝", "京东", "拼多多", "网购", "快递", "iCloud", "云存储", "网盘"] },
+    { id: "salary", name: "工资", type: "income", color: "#79BD93", icon: "briefcase", aliases: ["工资", "薪水", "发薪", "薪资", "劳务", "兼职", "稿费", "外快"] },
+    { id: "allowance", name: "生活费", type: "income", color: "#B7CF7B", icon: "wallet", aliases: ["生活费", "零花钱", "红包", "退款", "报销", "中奖", "返还"] },
+    { id: "investment", name: "理财", type: "income", color: "#75B6AE", icon: "trend", aliases: ["理财", "收益", "利息", "基金", "股票", "分红"] },
+    { id: "borrowing", name: "借款", type: "income", color: "#A9A0C8", icon: "handshake", aliases: ["借款", "借入", "借到"] },
+    { id: "loan-repayment", name: "归还借款", type: "expense", color: "#D69A92", icon: "repay", aliases: ["归还借款", "还借款", "还钱"] },
+  ],
+  creditTools: [],
+  transactions: [],
+  subscriptions: [],
+  assets: [],
+  repayments: [],
+  loans: [],
+  projectRules: [],
+  rates: [
+    { code: "CNY", name: "人民币", symbol: "¥", rateToCny: 1 },
+    { code: "USD", name: "美元", symbol: "$", rateToCny: 7.08, aliases: ["美金", "美元"] },
+    { code: "EUR", name: "欧元", symbol: "€", rateToCny: 8.31 },
+    { code: "JPY", name: "日元", symbol: "¥", rateToCny: 0.047 },
+    { code: "SGD", name: "新加坡元", symbol: "S$", rateToCny: 5.52 },
+  ],
+  baseCurrency: "CNY",
+  autoUpdateRates: false,
+  glassOpacity: 42,
+  accentColor: "#6D9E8A",
+  themeMode: "system",
+  dockAction: "manual",
+  slogans: defaultSlogans,
+  webDav: {
+    provider: "jianguoyun",
+    endpoint: "https://dav.jianguoyun.com/dav/",
+    username: "",
+    remotePath: "iLedger/ledger.json",
+    autoSync: false,
+    syncOnLaunch: true,
+    syncIntervalMinutes: 5,
+  },
+  designVersion: 7,
+};

@@ -1,2 +1,40 @@
-# iLedger
-iledger is a simple, self-hostable personal ledger application. It supports recording income and expenditure, viewing statistical summaries, filtering bills. All data is stored locally on your device, no server upload, protecting your financial privacy.
+# iLedger 本地账本
+
+跨 macOS、Windows、Android 和浏览器的本地个人记账工具。账本默认保存在当前应用的本地存储中。
+
+## 启动
+
+```bash
+npm install
+npm run dev
+```
+
+打开 `http://127.0.0.1:4173/`。
+
+## 安装包构建
+
+桌面版使用 Electron，Android 版使用 Capacitor，三端图标均来自 `public/iledger-favicon.svg`。
+
+```bash
+npm run pack:mac      # Apple Silicon DMG
+npm run pack:win      # Windows x64 NSIS EXE
+npm run pack:android  # Android 调试版 APK
+```
+
+桌面安装包写入 `release/`；Android 打包需要本机安装 JDK 21、Android SDK 36，并配置 `JAVA_HOME` 与 `ANDROID_HOME`。当前脚本生成的 macOS 和 Windows 安装包未使用发布证书签名；Android 包使用调试签名，不适合直接上架应用商店。
+
+## 当前包含
+
+- 可拖拽、缩放、增删和长按编辑的驾驶舱磁贴
+- 按时间范围、图表类型、统计字段和分组维度自由组合分析磁贴
+- 收入、支出、订阅、折旧资产和近期流水
+- 自然语言解析、确认卡、低置信度提示与项目记忆库
+- 普通付款、信用付款与多期付款
+- 信用账单联动、可排序的多还款账户、自动还款与自定义手动还款
+- 数据库筛选、搜索、流水编辑及 CSV 导入导出
+- 可新增账户、类别和币种，类别支持预置图标与压缩后的自定义图片
+- 白色/近黑主题、可调通透度的液态玻璃、莫兰迪图表配色与窄屏适配
+
+## 数据说明
+
+账本数据写入各平台应用自己的 `localStorage`；网页与安装版之间不会自动迁移已有数据，可先通过导出、导入功能转移。联网汇率使用 Frankfurter 公开参考汇率接口，只发送币种代码。WebDAV 传输仍由用户手动触发，尚未实现无感同步。

@@ -1,0 +1,28 @@
+appId: com.iledger.app
+productName: iLedger
+artifactName: iLedger-${version}-${os}-${arch}.${ext}
+directories:
+  output: release
+files:
+  - dist/**/*
+  - desktop/**/*
+  - package.json
+  - "!node_modules/**/*"
+mac:
+  icon: public/iledger-favicon.svg
+  identity: null
+  extendInfo:
+    NSMicrophoneUsageDescription: iLedger 需要使用麦克风录入语音记账。
+  target:
+    - target: dmg
+      arch:
+        - arm64
+win:
+  icon: public/iledger-favicon.svg
+  target:
+    - target: nsis
+      arch:
+        - x64
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
