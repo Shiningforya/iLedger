@@ -1,5 +1,7 @@
 # iLedger 本地账本
 
+原生重构位于 [`native/`](native/README.md)：SwiftUI、Jetpack Compose、WinUI 3 和共享 SQLite 账务内核。当前为开发候选版，尚未替代以下旧版应用；验证结果与未完成事项见[原生验证记录](native/docs/validation.md)。
+
 跨 macOS、Windows、Android 和浏览器的本地个人记账工具。
 账本默认保存在当前应用的本地存储中。
 

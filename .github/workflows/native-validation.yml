@@ -1,0 +1,74 @@
+name: Native candidate validation
+on:
+  workflow_dispatch:
+  pull_request:
+    paths: ['native/**', 'scripts/native/**', '.github/workflows/native-validation.yml']
+permissions:
+  contents: read
+concurrency:
+  group: native-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  macos:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: node scripts/native/setup.mjs --mac-model-engines --qwen --sensevoice
+      - run: node scripts/native/build-macos.mjs
+      - run: node native/core/tests/accounting.test.mjs
+      - run: node scripts/native/model-smoke.mjs
+      - run: ditto -c -k --keepParent 'native/.build/iLedger Native.app' native/.build/iLedger-native-candidate.zip
+      - uses: actions/upload-artifact@v4
+        with: { name: macos-native-candidate, path: native/.build/iLedger-native-candidate.zip }
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: 21 }
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+          log-accepted-android-sdk-licenses: false
+      - run: npm ci
+      - run: node scripts/native/setup.mjs
+      - run: node scripts/native/prepare-platforms.mjs
+      - run: sdkmanager 'platforms;android-36' 'build-tools;36.0.0' 'ndk;28.2.13676358' 'cmake;3.22.1'
+      - run: bash native/android/gradlew -p native/android --no-daemon assembleDebug assembleDebugAndroidTest lintDebug
+      - name: Enable KVM for emulator tests
+        run: sudo chmod 666 /dev/kvm
+      - uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          target: google_apis
+          profile: pixel_6
+          disable-animations: false
+          script: bash scripts/native/test-android.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: android-native-test-reports, path: native/android/app/build/reports/ }
+      - uses: actions/upload-artifact@v4
+        with: { name: android-native-candidate, path: native/android/app/build/outputs/apk/debug/*.apk }
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - uses: actions/setup-dotnet@v4
+        with: { dotnet-version: '8.0.x' }
+      - run: npm ci
+      - run: node scripts/native/setup.mjs
+      - run: node scripts/native/prepare-platforms.mjs
+      - shell: pwsh
+        run: ./scripts/native/build-windows.ps1
+      - run: node native/core/tests/accounting.test.mjs
+        env: { ILEDGER_CORE_BIN: native/.build/windows-core/Release/iledger-core.exe }
+      - uses: actions/upload-artifact@v4
+        with: { name: windows-native-candidate, path: native/.build/windows-app/ }
