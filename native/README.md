@@ -68,6 +68,12 @@ The output is an ad-hoc-signed `.app`, **not** a notarized distribution DMG. Use
 `ILEDGER_DATA_DIR` to isolate UI test data. Full Xcode and an Apple distribution
 identity are still required for release signing/notarization. Models are installed
 from Settings; a successful file copy is not reported as successful inference.
+Use the `Q4_K_M` GGUF for Qwen. For SenseVoice, choose a directory containing
+`model.int8.onnx` and `tokens.txt`. Verified downloads are also available through
+`node scripts/native/setup.mjs --qwen --sensevoice`; they go into `.deps/`, not
+automatically into the app's model directory. Model weights are not bundled with
+the application. The development candidate currently runs Qwen on CPU; see the
+validation record for measured CI latency and remaining performance work.
 The local SDK is 15.5, so this candidate uses native system materials and controls;
 it does not pretend that CSS or an older material is the SDK 26 `glassEffect` API.
 
@@ -117,6 +123,11 @@ must accompany it. Signed MSIX/installer distribution has not been implemented.
 The old customizable/resizable tiles, credit bill generation and repayment scheduling,
 installments, automatic subscription renewal/expiry, CSV mapping/deduplication/review,
 full recognition learning, automatic sync, all three platforms' model management,
-and complete accessibility/localization have **not** reached feature parity.
+the original theme/glass controls and configurable slogans, and complete
+accessibility/localization have **not** reached feature parity.
+The platform UIs also have unequal workflow coverage: Android and Windows do not
+yet expose every macOS action (including the complete account-transfer/deletion
+and loan-repayment flows). A shared core action or a successful build does not
+mean that every platform exposes a finished user workflow.
 Native controls resolve the architectural dependency on browser behavior, but do
 not by themselves prove that the application is smooth or correct on every device.
