@@ -17,6 +17,8 @@ class NavigationTest {
     private fun screenshot(name: String) {
         compose.waitForIdle()
         val instrumentation=InstrumentationRegistry.getInstrumentation()
+        instrumentation.waitForIdleSync()
+        instrumentation.uiAutomation.waitForIdle(500,5000)
         val directory=File(instrumentation.targetContext.getExternalFilesDir(null),"screenshots")
         check(directory.mkdirs() || directory.isDirectory)
         val bitmap=requireNotNull(instrumentation.uiAutomation.takeScreenshot())
@@ -57,6 +59,9 @@ class NavigationTest {
         compose.activityRule.scenario.recreate()
         compose.onNodeWithTag("editor-transactions").assertIsDisplayed()
         compose.onNode(hasText("项目名称") and hasSetTextAction()).assertTextContains("重建测试草稿")
+        Espresso.closeSoftKeyboard()
+        compose.onNodeWithTag("editor-save").assertIsDisplayed()
+        compose.onNode(hasText("金额") and hasSetTextAction()).assertIsDisplayed()
         screenshot("restored-draft")
     }
     @Test fun installedVersionMatchesBuildDefinition() {
