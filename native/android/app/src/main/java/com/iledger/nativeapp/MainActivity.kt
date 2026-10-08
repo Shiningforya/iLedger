@@ -92,9 +92,10 @@ val sections = listOf("transactions" to "全部流水", "expense" to "支出", "
 
 @Composable private fun Dashboard(state: JSONObject, summary: JSONObject) {
     val configuration=LocalConfiguration.current
-    val columns=if(configuration.screenWidthDp >= 340 && configuration.fontScale <= 1.5f) 2 else 1
     val rows=remember(state) { state.rows("transactions").sortedByDescending { it.optString("date") } }
     val base=state.optString("baseCurrency","CNY")
+    BoxWithConstraints(Modifier.fillMaxSize()) {
+    val columns=if(maxWidth >= 340.dp && configuration.fontScale <= 1.5f) 2 else 1
     LazyVerticalGrid(columns=GridCells.Fixed(columns),contentPadding=PaddingValues(12.dp),horizontalArrangement=Arrangement.spacedBy(12.dp),verticalArrangement=Arrangement.spacedBy(12.dp),modifier=Modifier.testTag("dashboard-grid")) {
         items(listOf("income" to "总收入","expense" to "总支出","net" to "收支差"),key={it.first}) { (key,label) ->
             OutlinedCard(Modifier.fillMaxWidth().heightIn(min=108.dp)) { Column(Modifier.padding(14.dp),verticalArrangement=Arrangement.spacedBy(10.dp)) {
@@ -121,6 +122,7 @@ val sections = listOf("transactions" to "全部流水", "expense" to "支出", "
         item(span={GridItemSpan(maxLineSpan)}) { Text("最近流水",style=MaterialTheme.typography.titleMedium,modifier=Modifier.padding(top=12.dp)) }
         items(rows.take(20),key={it.optString("id")},span={GridItemSpan(maxLineSpan)}) { row -> RecordContent(row,"transactions",state) }
         if(rows.isEmpty()) item(span={GridItemSpan(maxLineSpan)}) { Text("尚无流水",modifier=Modifier.padding(24.dp)) }
+    }
     }
 }
 
