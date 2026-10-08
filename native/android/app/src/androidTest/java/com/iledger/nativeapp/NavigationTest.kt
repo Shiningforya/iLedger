@@ -29,4 +29,11 @@ class NavigationTest {
             assertEquals(income.top,expense.top,1f)
         }
     }
+    @Test fun draftSurvivesActivityRecreation() {
+        compose.onNodeWithContentDescription("新增支出").performClick()
+        compose.onNode(hasText("项目名称") and hasSetTextAction()).performTextInput("重建测试草稿")
+        compose.activityRule.scenario.recreate()
+        compose.onNodeWithTag("editor-transactions").assertIsDisplayed()
+        compose.onNode(hasText("项目名称") and hasSetTextAction()).assertTextContains("重建测试草稿")
+    }
 }

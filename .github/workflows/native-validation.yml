@@ -40,6 +40,18 @@ jobs:
       - run: node scripts/native/prepare-platforms.mjs
       - run: sdkmanager 'platforms;android-36' 'build-tools;36.0.0' 'ndk;28.2.13676358' 'cmake;3.22.1'
       - run: bash native/android/gradlew -p native/android --no-daemon assembleDebug assembleDebugAndroidTest lintDebug
+      - name: Enable KVM for emulator tests
+        run: sudo chmod 666 /dev/kvm
+      - uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          target: google_apis
+          disable-animations: false
+          script: bash native/android/gradlew -p native/android --no-daemon connectedDebugAndroidTest
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: android-native-test-reports, path: native/android/app/build/reports/ }
       - uses: actions/upload-artifact@v4
         with: { name: android-native-candidate, path: native/android/app/build/outputs/apk/debug/*.apk }
   windows:

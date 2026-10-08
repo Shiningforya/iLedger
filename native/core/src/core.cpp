@@ -237,6 +237,7 @@ Json parse_entry(const Json &state, const std::string &source, const std::string
     for (auto &currency : currencies) {
         if (!currency.contains("aliases")) currency["aliases"] = Json::array();
         currency["aliases"].push_back(currency["code"]);
+        currency["aliases"].push_back(currency["name"]);
         const auto code = str(currency, "code");
         for (const auto &alias : code == "USD" ? std::vector<std::string>{"美刀","美元","美金"} : code == "EUR" ? std::vector<std::string>{"欧元","欧"} : code == "IDR" ? std::vector<std::string>{"印尼盾","印度尼西亚卢比"} : std::vector<std::string>{}) currency["aliases"].push_back(alias);
     }
@@ -367,9 +368,11 @@ Json apply(Json &state, const Json &request) {
         erase(state["accounts"],id);return Json::object();
     }
     if(action == "saveCategory") {
-        if(str(value,"id").empty())value["id"]=uid(); require(!str(value,"name").empty(),"请输入类别名称");
-        for(const auto &cat:state["categories"])require(str(cat,"name")!=str(value,"name")||str(cat,"id")==str(value,"id"),"类别名称已存在");
+        if(str(value,"id").empty())value["id"]=uid();
         const auto *old=find(state["categories"],str(value,"id"));
+        if(old){Json merged=*old;merged.update(value);value=std::move(merged);}
+        require(!str(value,"name").empty(),"请输入类别名称");
+        for(const auto &cat:state["categories"])require(str(cat,"name")!=str(value,"name")||str(cat,"id")==str(value,"id"),"类别名称已存在");
         if(old) { const auto before=str(*old,"name"); for(const auto &collection:{"transactions","subscriptions","assets","projectRules"})for(auto &item:state[collection])if(str(item,"category")==before) { require(str(value,"type")==str(*old,"type"),"已使用的类别不能改变收支类型"); item["category"]=value["name"]; } }
         upsert(state["categories"],value);return value;
     }

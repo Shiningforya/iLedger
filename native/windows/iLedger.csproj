@@ -19,6 +19,7 @@
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.260921001" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.4654" />
     <Content Include="..\core\resources\presets.json" Link="presets.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="..\licenses\*.txt" Link="ThirdParty\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="..\.build\windows-core\Release\iledger_core.dll" Link="iledger_core.dll" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

@@ -118,7 +118,7 @@ try {
   assert.deepEqual(credit[2].data.creditTools[0].repaymentAccountIds,["cny"]);
   assert.equal(credit[2].data.creditTools[0].autoRepay,true);
   assert.equal(credit[2].data.accounts.find(a=>a.id==="visa").balance,10);
-  const explicit=run([{action:"resolveModel",text:"用人民币余额账户购买 ChatGPT，支出20美元，类别为学习",date:"2026-10-08",value:{item:"ChatGPT",amount:20,currency:"USD",category:"学习",accountId:"cny",type:"income"}}]);
+  const explicit=run([{action:"resolveModel",text:"用人民币余额账户购买 ChatGPT，支出20美元，类别为学术",date:"2026-10-08",value:{item:"ChatGPT",amount:20,currency:"USD",category:"学术",accountId:"cny",type:"income"}}]);
   assert.equal(explicit[0].ok,true,explicit[0].error);
   assert.equal(explicit[0].data.currency,"USD","currency within account name must not override currency adjacent to amount");
   assert.equal(explicit[0].data.type,"expense","model cannot override explicit expense verb");

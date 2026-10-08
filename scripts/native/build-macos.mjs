@@ -11,6 +11,7 @@ for (const folder of ["MacOS","Resources","Frameworks","Helpers"]) mkdirSync(joi
 execFileSync(process.execPath,["scripts/native/build-core.mjs"],{stdio:"inherit"});
 cpSync(join(out,"libiledger_core.dylib"),join(contents,"Frameworks/libiledger_core.dylib"));
 cpSync(join(root,"core/resources/presets.json"),join(contents,"Resources/presets.json"));
+cpSync(join(root,"licenses"),join(contents,"Resources/ThirdParty"),{recursive:true});
 const source = join(root,"macos/Sources");
 const sdk = execFileSync("xcrun",["--show-sdk-path"],{encoding:"utf8"}).trim();
 mkdirSync(join(out,"module-cache"),{recursive:true});
