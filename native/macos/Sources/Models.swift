@@ -71,7 +71,7 @@ final class ModelProcess: @unchecked Sendable {
         try Data(prompt.utf8).write(to:promptURL, options:.atomic)
         try FileManager.default.setAttributes([.posixPermissions:0o600], ofItemAtPath:promptURL.path)
         defer { try? FileManager.default.removeItem(at:promptURL) }
-        let output = try await run(executable:executable, arguments:["-m",model.path,"-f",promptURL.path,"-n","256","-c","4096","-t","4","--temp","0","--no-display-prompt","--no-conversation","--json-schema",schema,"--no-perf","--simple-io","--color","off"])
+        let output = try await run(executable:executable, arguments:["-m",model.path,"-f",promptURL.path,"-n","256","-c","4096","-t","4","-ngl","0","-fa","off","--temp","0","--no-display-prompt","--no-conversation","--json-schema",schema,"--no-perf","--simple-io","--color","off"])
         guard let start = output.firstIndex(of:"{"), let end = output.lastIndex(of:"}"), let record = try JSONSerialization.jsonObject(with:Data(output[start...end].utf8)) as? Record else { throw LedgerFailure(message:"模型未返回有效结构，请检查模型或改用基础识别。") }
         return record
     }

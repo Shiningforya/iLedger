@@ -16,7 +16,7 @@ try {
     const prompt = `<|im_start|>system\n将用户记账内容解析为 JSON。只返回 item,type,amount,currency,category,accountId。type 为 expense 或 income。类别、账户、币种只从以下资料选择。资料：${JSON.stringify(catalog)}<|im_end|>\n<|im_start|>user\n${text}<|im_end|>\n<|im_start|>assistant\n`;
     const file=join(directory,"prompt.txt");writeFileSync(file,prompt,{mode:0o600});
     const start=performance.now();
-    const result=spawnSync(executable,["-m",resolve("native/.deps/qwen.gguf"),"-f",file,"-n","256","-c","4096","-t","4","--temp","0","--no-display-prompt","--no-conversation","--json-schema",JSON.stringify(schema),"--no-perf","--simple-io","--color","off"],{encoding:"utf8",timeout:120000,maxBuffer:2*1024*1024});
+    const result=spawnSync(executable,["-m",resolve("native/.deps/qwen.gguf"),"-f",file,"-n","256","-c","4096","-t","4","-ngl","0","-fa","off","--temp","0","--no-display-prompt","--no-conversation","--json-schema",JSON.stringify(schema),"--no-perf","--simple-io","--color","off"],{encoding:"utf8",timeout:120000,maxBuffer:2*1024*1024});
     assert.equal(result.status,0,result.stderr || String(result.error));
     const begin=result.stdout.indexOf("{"),end=result.stdout.lastIndexOf("}");
     const value=JSON.parse(result.stdout.slice(begin,end+1));
