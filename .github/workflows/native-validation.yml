@@ -13,9 +13,10 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: 22, cache: npm }
       - run: npm ci
-      - run: node scripts/native/setup.mjs --mac-model-engines
+      - run: node scripts/native/setup.mjs --mac-model-engines --qwen
       - run: node scripts/native/build-macos.mjs
       - run: node native/core/tests/accounting.test.mjs
+      - run: node scripts/native/model-smoke.mjs
       - run: ditto -c -k --keepParent 'native/.build/iLedger Native.app' native/.build/iLedger-native-candidate.zip
       - uses: actions/upload-artifact@v4
         with: { name: macos-native-candidate, path: native/.build/iLedger-native-candidate.zip }
