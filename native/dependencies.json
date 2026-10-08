@@ -1,0 +1,8 @@
+{
+  "json": {"version":"3.12.0","url":"https://raw.githubusercontent.com/nlohmann/json/v3.12.0/single_include/nlohmann/json.hpp","file":"json.hpp","algorithm":"sha256","checksum":"aaf127c04cb31c406e5b04a63f1ae89369fccde6d8fa7cdda1ed4f32dfc5de63"},
+  "sqlite": {"version":"3.53.4","url":"https://www.sqlite.org/2026/sqlite-amalgamation-3530400.zip","file":"sqlite-amalgamation.zip","algorithm":"sha3-256","checksum":"628a44cfe82c66aed1ccbbe85a562d2e33ebe64b3288981ed76285612227934e"},
+  "llamaMacArm64": {"version":"b11482","url":"https://github.com/ggml-org/llama.cpp/releases/download/b11482/llama-b11482-bin-macos-arm64.tar.gz","file":"llama.tar.gz","algorithm":"sha256","checksum":"e1ac1bda3b060acaf6f4321ec43768f62a3c1ac626cb02a1b8120498f49ebe18"},
+  "sherpaMacArm64": {"version":"1.13.8","url":"https://github.com/k2-fsa/sherpa-onnx/releases/download/v1.13.8/sherpa-onnx-v1.13.8-osx-arm64-shared-no-tts-lib.tar.bz2","file":"sherpa-lib.tar.bz2","algorithm":"sha256","checksum":"f3e0cbd86cc3f38dad30c97921b40e9a8bcc6f2c943777eb76ad77176993e417"},
+  "sherpaHeader": {"version":"1.13.8","url":"https://raw.githubusercontent.com/k2-fsa/sherpa-onnx/v1.13.8/sherpa-onnx/c-api/c-api.h","file":"sherpa-c-api.h","algorithm":"sha256","checksum":"2a1b95084be8fd1deb3228fcad2fd3f7f0258b64582f7402281ec174c7b7f4ce"},
+  "qwen": {"version":"Qwen2.5-1.5B-Instruct-Q4_K_M","url":"https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/qwen2.5-1.5b-instruct-q4_k_m.gguf","file":"qwen.gguf","algorithm":"sha256","checksum":"6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e"}
+}

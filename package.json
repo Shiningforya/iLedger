@@ -5,6 +5,12 @@
   "type": "module",
   "main": "desktop/main.cjs",
   "scripts": {
+    "native:setup": "node scripts/native/setup.mjs",
+    "native:core": "node scripts/native/build-core.mjs",
+    "native:test": "node scripts/native/build-core.mjs && node native/core/tests/accounting.test.mjs",
+    "native:mac": "node scripts/native/build-macos.mjs",
+    "native:android": "node scripts/native/prepare-platforms.mjs && cd native/android && ./gradlew assembleDebug lintDebug",
+    "native:windows": "node scripts/native/prepare-platforms.mjs && pwsh -File scripts/native/build-windows.ps1",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",

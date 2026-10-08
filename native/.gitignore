@@ -1,0 +1,15 @@
+.deps/
+.build/
+build/
+**/.gradle/
+**/local.properties
+**/bin/
+**/obj/
+**/build/
+*.sqlite*
+*.gguf
+*.onnx
+*.wav
+android/gradle/wrapper/gradle-wrapper.jar
+android/app/src/main/res/mipmap-*/ic_launcher.png
+windows/Assets/iLedger.ico

@@ -1,0 +1,32 @@
+<Window x:Class="ILedger.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="iLedger Native">
+  <NavigationView x:Name="Navigation" IsBackButtonVisible="Collapsed" SelectionChanged="Navigate" PaneDisplayMode="Auto" Header="iLedger">
+    <NavigationView.MenuItems>
+      <NavigationViewItem Content="驾驶舱" Tag="dashboard" Icon="Home" />
+      <NavigationViewItem Content="全部流水" Tag="transactions" Icon="List" />
+      <NavigationViewItem Content="支出" Tag="expense" />
+      <NavigationViewItem Content="收入" Tag="income" />
+      <NavigationViewItem Content="借款" Tag="loans" />
+      <NavigationViewItem Content="订阅" Tag="subscriptions" />
+      <NavigationViewItem Content="资产折旧" Tag="assets" />
+      <NavigationViewItemSeparator />
+      <NavigationViewItem Content="账户与信用" Tag="accounts" Icon="Contact" />
+      <NavigationViewItem Content="类别管理" Tag="categories" />
+      <NavigationViewItem Content="币种与汇率" Tag="rates" />
+    </NavigationView.MenuItems>
+    <Grid Padding="20" RowSpacing="12">
+      <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+      <CommandBar DefaultLabelPosition="Right">
+        <AppBarButton Label="新增支出" Icon="Add" Click="NewExpense"/>
+        <AppBarButton Label="新增收入" Icon="Add" Click="NewIncome"/>
+        <AppBarButton Label="新增" Icon="Edit" Click="NewEntity"/>
+        <AppBarButton Label="导入账本" Icon="Import" Click="Import"/>
+        <AppBarButton Label="导出备份" Icon="Save" Click="Export"/>
+      </CommandBar>
+      <InfoBar x:Name="Feedback" Grid.Row="1" IsOpen="False" IsClosable="True" Severity="Error" />
+      <ListView x:Name="Records" Grid.Row="2" SelectionMode="Single" IsItemClickEnabled="True" ItemClick="EditRow" HorizontalContentAlignment="Stretch">
+        <ListView.ItemTemplate><DataTemplate><StackPanel Padding="12" Spacing="5"><TextBlock Text="{Binding Title}" Style="{StaticResource BodyStrongTextBlockStyle}" TextWrapping="Wrap"/><TextBlock Text="{Binding Detail}" TextWrapping="Wrap"/></StackPanel></DataTemplate></ListView.ItemTemplate>
+      </ListView>
+      <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="12"><Button Content="上一页" Click="Previous"/><TextBlock x:Name="PageLabel" VerticalAlignment="Center"/><Button Content="下一页" Click="Next"/></StackPanel>
+    </Grid>
+  </NavigationView>
+</Window>
