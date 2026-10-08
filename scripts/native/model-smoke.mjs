@@ -25,4 +25,9 @@ try {
     console.log(JSON.stringify({fixture:text,result:value,elapsedMs:Math.round(performance.now()-start)}));
   }
   console.log("Native llama.cpp/Qwen inference smoke tests passed (not an accuracy benchmark).");
+  const speech=spawnSync(resolve("native/.build/iLedger Native.app/Contents/Helpers/speech/iledger-speech"),[resolve("native/.deps/sensevoice"),resolve("native/.deps/sensevoice-zh.wav")],{encoding:"utf8",timeout:120000,maxBuffer:2*1024*1024});
+  assert.equal(speech.status,0,speech.stderr || String(speech.error));
+  assert.match(speech.stdout,/时间/);assert.match(speech.stdout,/9|九/);assert.match(speech.stdout,/5|五/);
+  console.log(JSON.stringify({fixture:"official SenseVoice zh.wav",transcript:speech.stdout.trim()}));
+  console.log("Native SenseVoice smoke test passed (one public sample, not a WER/CER benchmark).");
 } finally { rmSync(directory,{recursive:true,force:true}); }

@@ -5,6 +5,9 @@ on:
     paths: ['native/**', 'scripts/native/**', '.github/workflows/native-validation.yml']
 permissions:
   contents: read
+concurrency:
+  group: native-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   macos:
     runs-on: macos-15
@@ -13,7 +16,7 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: 22, cache: npm }
       - run: npm ci
-      - run: node scripts/native/setup.mjs --mac-model-engines --qwen
+      - run: node scripts/native/setup.mjs --mac-model-engines --qwen --sensevoice
       - run: node scripts/native/build-macos.mjs
       - run: node native/core/tests/accounting.test.mjs
       - run: node scripts/native/model-smoke.mjs

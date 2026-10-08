@@ -31,4 +31,10 @@ if(process.argv.includes("--mac-model-engines")) {
   cpSync(await obtain("sherpaHeader"),join(header,"c-api.h"));
 }
 if(process.argv.includes("--qwen"))await obtain("qwen");
+if(process.argv.includes("--sensevoice")) {
+  const models=join(directory,"sensevoice");mkdirSync(models,{recursive:true});
+  cpSync(await obtain("sensevoice"),join(models,"model.int8.onnx"));
+  cpSync(await obtain("sensevoiceTokens"),join(models,"tokens.txt"));
+  await obtain("sensevoiceSample");
+}
 console.log("Native dependencies verified.");

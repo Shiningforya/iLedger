@@ -241,6 +241,16 @@ Json parse_entry(const Json &state, const std::string &source, const std::string
         for (const auto &alias : code == "USD" ? std::vector<std::string>{"美刀","美元","美金"} : code == "EUR" ? std::vector<std::string>{"欧元","欧"} : code == "IDR" ? std::vector<std::string>{"印尼盾","印度尼西亚卢比"} : std::vector<std::string>{}) currency["aliases"].push_back(alias);
     }
     if (const auto *currency = match(currencies, "name", false)) { result["currency"] = (*currency)["code"]; locks["currency"] = result["currency"]; }
+    // A currency next to the amount outranks currency words inside account names.
+    size_t currency_score = 0;
+    for (const auto &currency : currencies) for (const auto &alias : currency["aliases"]) {
+        if (!alias.is_string()) continue;
+        const auto word = alias.get<std::string>(); if (word.empty()) continue;
+        std::string escaped;
+        for (char c : word) { if (std::strchr(".^$|()[]{}*+?\\", c)) escaped += '\\'; escaped += c; }
+        const std::regex adjacent("(?:[0-9]+(?:\\.[0-9]+)?\\s*" + escaped + "|" + escaped + "\\s*[0-9]+(?:\\.[0-9]+)?)",std::regex::icase);
+        if (word.size() > currency_score && std::regex_search(source,adjacent)) { result["currency"] = currency["code"]; locks["currency"] = result["currency"]; currency_score = word.size(); }
+    }
     std::smatch amount;
     const std::regex explicit_amount(R"((?:花了|花费了|花费|支付|支出|收入|收到|收款|金额|借到|借入)[^0-9]{0,12}([0-9]+(?:\.[0-9]+)?))");
     if (std::regex_search(source, amount, explicit_amount)) result["amount"] = std::stod(amount[1]);
