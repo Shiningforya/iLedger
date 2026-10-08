@@ -49,9 +49,7 @@ jobs:
           target: google_apis
           profile: pixel_6
           disable-animations: false
-          script: |
-            bash native/android/gradlew -p native/android --no-daemon connectedDebugAndroidTest
-            adb pull /sdcard/Download/iledger-native-screenshots native/android/app/build/reports/screenshots
+          script: bash scripts/native/test-android.sh
       - uses: actions/upload-artifact@v4
         if: always()
         with: { name: android-native-test-reports, path: native/android/app/build/reports/ }

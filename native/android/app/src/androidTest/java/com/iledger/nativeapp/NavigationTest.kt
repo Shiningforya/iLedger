@@ -2,10 +2,11 @@ package com.iledger.nativeapp
 
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.test.espresso.Espresso
 import androidx.test.platform.app.InstrumentationRegistry
 import android.graphics.Bitmap
 import android.os.ParcelFileDescriptor
+import android.os.SystemClock
+import android.view.KeyEvent
 import java.io.File
 import org.junit.Rule
 import org.junit.Test
@@ -14,6 +15,12 @@ import org.junit.Assert.assertTrue
 
 class NavigationTest {
     @get:Rule val compose = createAndroidComposeRule<MainActivity>()
+    private fun systemBack() {
+        val automation=InstrumentationRegistry.getInstrumentation().uiAutomation
+        val now=SystemClock.uptimeMillis()
+        check(automation.injectInputEvent(KeyEvent(now,now,KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_BACK,0),true))
+        check(automation.injectInputEvent(KeyEvent(now,now+1,KeyEvent.ACTION_UP,KeyEvent.KEYCODE_BACK,0),true))
+    }
     private fun screenshot(name: String) {
         compose.waitForIdle()
         val instrumentation=InstrumentationRegistry.getInstrumentation()
@@ -36,10 +43,10 @@ class NavigationTest {
         compose.onNodeWithContentDescription("新建类别").performScrollTo().performClick()
         compose.onNodeWithTag("editor-categories").assertIsDisplayed()
         screenshot("nested-category")
-        Espresso.pressBack()
+        systemBack()
         compose.onNodeWithTag("editor-categories").assertDoesNotExist()
         compose.onNodeWithTag("editor-transactions").assertIsDisplayed()
-        Espresso.pressBack()
+        systemBack()
         compose.onNodeWithTag("editor-transactions").assertDoesNotExist()
         compose.onNodeWithTag("dashboard-grid").assertIsDisplayed()
         screenshot("back-to-dashboard")
@@ -59,7 +66,6 @@ class NavigationTest {
         compose.activityRule.scenario.recreate()
         compose.onNodeWithTag("editor-transactions").assertIsDisplayed()
         compose.onNode(hasText("项目名称") and hasSetTextAction()).assertTextContains("重建测试草稿")
-        Espresso.closeSoftKeyboard()
         compose.onNodeWithTag("editor-save").assertIsDisplayed()
         compose.onNode(hasText("金额") and hasSetTextAction()).assertIsDisplayed()
         screenshot("restored-draft")
